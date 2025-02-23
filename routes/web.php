@@ -22,3 +22,7 @@ Route::Post('/send-email-verify', [ApiController::class, 'sendVerifyEmail'])->na
 
 Route::get("/account/verify/{token}", [ApiController::class, 'verifyUser'])->name('verify.user');
 
+Route::get('/resend-email-verification', function () {
+    return view('resend-email-verification');
+})->name('resend-email.user');
+

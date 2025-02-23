@@ -20,7 +20,7 @@
             <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">{{ session('error') }}</div>
         @endif
         
-        <form action="" method="POST" class="space-y-4"> {{--{{ route('login') }}--}}
+        <form method="POST" class="space-y-4">
             @csrf
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
@@ -43,7 +43,7 @@
             <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">Login</button>
         </form>
         
-        <p class="mt-4 text-sm text-center text-gray-600">Don't have an account? <a href="#" class="text-blue-600 hover:underline">Sign up</a></p>
+        <p class="mt-4 text-sm text-center text-gray-600">Don't have an account? <a href="{{ route('register')}}" class="text-blue-600 hover:underline">Sign up</a></p>
     </div>
 </body>
 </html>

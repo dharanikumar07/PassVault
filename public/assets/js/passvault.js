@@ -39,7 +39,7 @@ $(document).ready(function () {
             method: "POST",
             data: $(this).serialize(),
             success: function (response) {
-                toastMessage("success", response.message, redirectToLoginPage);
+                toastMessage("success", response.message,redirectToResendemail);
                 resetButton(submitButton);
                 sendEmailVerification();
             },
@@ -48,6 +48,18 @@ $(document).ready(function () {
                 resetButton(submitButton);
             }
         });
+    });
+
+    $("#resendEmailBtn").click(function (event) {
+        event.preventDefault();
+
+        const reSendBtn = $(this).find('button');
+        reSendBtn.prop('disabled', true);
+        reSendBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+
+        sendEmailVerification();
+
+
     });
 
     function resetButton(button) {
@@ -62,6 +74,12 @@ $(document).ready(function () {
             data: {
                 email: $("#email").val(),
                 _token: $('meta[name="csrf-token"]').attr("content")
+            },
+            success: function (response) {
+                toastMessage("success", response.message);
+            },
+            error: function (xhr) {
+                toastMessage("error", xhr.responseJSON?.message);
             }
         });
     }
@@ -107,7 +125,7 @@ $(document).ready(function () {
         if (callback && typeof callback === "function") callback();
     }
 
-    function redirectToLoginPage() {
-        window.location.href = "/login";
+    function redirectToResendemail(){
+        window.location.href = "/resend-email-verification"
     }
 });
