@@ -1,0 +1,78 @@
+.passvault-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pv-toast {
+    position: relative;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.pv-toast-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: white;
+    color: #007BFF;
+}
+
+.pv-toast-content {
+    flex: 1;
+    font-size: 14px;
+}
+
+.pv-toast i.pv-close {
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.pv-toast::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: white;
+    animation: progressBar 5s linear forwards;
+}
+
+.pv-toast:hover::before {
+    animation-play-state: paused;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes progressBar {
+    from { width: 100%; }
+    to { width: 0; }
+}
+
+@media (max-width: 768px) {
+    .pv-toast {
+        width: 250px;
+        font-size: 12px;
+    }
+}
