@@ -27,6 +27,9 @@ class StoreUsers extends Controller
             ]);
 
             DB::commit();
+
+            session(['email' => $user->email]);
+
             return Response::json([
                 'message' => "Account created Successfully! .Please verify your email",
             ], 201);

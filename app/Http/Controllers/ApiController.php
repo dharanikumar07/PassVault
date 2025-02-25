@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Mockery\Expectation;
 use Str;
 use Illuminate\Support\Facades\Mail;
@@ -16,11 +17,9 @@ class ApiController extends Controller
     public function sendVerifyEmail(Request $request)
     {
         try {
-            $request->validate([
-                'email' => ['required', 'email']
-            ]);
+            $email = session('email');
 
-            $user = User::where('email', $request->get('email'))->first();
+            $user = User::where('email', $email)->first();
             $token = Str::uuid();
 
             $user->token = $token;
@@ -33,7 +32,8 @@ class ApiController extends Controller
                 $message->subject('Email Verification Mail By PassVault');
             });
             return Response::json([
-                'message' => 'Send verification email'
+                'message' => 'Send verification email',
+                'redirect_url' => true
             ], HttpFoundationResponse::HTTP_OK);
 
         } catch (\Exception $e) {
@@ -57,6 +57,7 @@ class ApiController extends Controller
                     $message = "User is not found";
                 }
                 $user->email_verified_at = now();
+                $user->is_verified = true;
                 $user->save();
 
                 $message = "Email Verified successfully! Now you login";
@@ -68,6 +69,40 @@ class ApiController extends Controller
         } catch (\Exception $e) {
             return Response::json([
                 "message" => $message,
+                "error" => $e->getMessage()
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    public function login(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return Response::json([
+                    "message" => "Invalid Crendtials."
+                ], HttpFoundationResponse::HTTP_UNAUTHORIZED);
+            }
+
+            if (!$user->is_verified) {
+                return Response::json([
+                    "message" => "Email not verified. Please verify your email."
+                ], HttpFoundationResponse::HTTP_UNAUTHORIZED);
+            }
+
+            return Response::json([
+                "message" => "Login Successfully"
+            ], HttpFoundationResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return Response::json([
+                "message" => "Something went wrong",
                 "error" => $e->getMessage()
             ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }

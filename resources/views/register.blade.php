@@ -66,7 +66,6 @@
             <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
         </p>
     </div>
-    
     <script src="{{ asset('assets/js/passvault.js') }}"></script>
 </body>
 </html>

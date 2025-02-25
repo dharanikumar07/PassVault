@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\isVerifiedEmail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreUsers;
 use App\Http\Controllers\ApiController;
@@ -22,7 +23,9 @@ Route::Post('/send-email-verify', [ApiController::class, 'sendVerifyEmail'])->na
 
 Route::get("/account/verify/{token}", [ApiController::class, 'verifyUser'])->name('verify.user');
 
+Route::Post("/login-users", [ApiController::class, 'login'])->name('login.try');
+
 Route::get('/resend-email-verification', function () {
     return view('resend-email-verification');
-})->name('resend-email.user');
+})->name('resend-email.user'); //->middleware(isVerifiedEmail::class);
 

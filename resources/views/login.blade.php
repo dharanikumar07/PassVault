@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Password Manager</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="relative w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
@@ -20,7 +22,7 @@
             <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">{{ session('error') }}</div>
         @endif
         
-        <form method="POST" class="space-y-4">
+        <form class="space-y-4" id="loginClicked">
             @csrf
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
@@ -45,5 +47,6 @@
         
         <p class="mt-4 text-sm text-center text-gray-600">Don't have an account? <a href="{{ route('register')}}" class="text-blue-600 hover:underline">Sign up</a></p>
     </div>
+    <script src="{{ asset('assets/js/passvault.js') }}"></script>
 </body>
 </html>

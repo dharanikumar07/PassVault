@@ -1,5 +1,7 @@
 $(document).ready(function () {
+    console.log("eneteredd")
     $("#registerclicked").submit(function (event) {
+        console.log("clicckeddd");
         event.preventDefault();
 
         const submitButton = $(this).find('button');
@@ -50,6 +52,28 @@ $(document).ready(function () {
         });
     });
 
+    $("#loginClicked").submit(function (event) {
+        event.preventDefault();
+
+        const submitButton = $(this).find('button');
+        submitButton.prop('disabled', true);
+        submitButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+
+        $.ajax({
+            url: "/login-users",
+            method: "POST",
+            data: $(this).serialize(),
+            success: function (response) {
+                toastMessage("success", response.message);
+                resetButton(submitButton);
+            },
+            error: function (xhr) {
+                toastMessage("error", xhr.responseJSON?.message || "An error occurred");
+                resetButton(submitButton);
+            }
+        });
+    });
+
     $("#resendEmailBtn").click(function (event) {
         event.preventDefault();
 
@@ -76,6 +100,10 @@ $(document).ready(function () {
                 _token: $('meta[name="csrf-token"]').attr("content")
             },
             success: function (response) {
+                if(response.redirect_url){
+                    console.log(response.redirect_url);
+                    toastMessage("success", response.message, redirectToResendemail);
+                }
                 toastMessage("success", response.message);
             },
             error: function (xhr) {
